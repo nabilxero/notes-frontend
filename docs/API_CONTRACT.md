@@ -40,8 +40,21 @@ Planned endpoints are filled in per milestone. Mark each as implemented when don
 
 JWT: HS256, `sub` = user id, `role` claim, expires per `JWT_EXPIRES_IN` (default 1 day).
 
-### M2 (planned)
-- `POST /notes`, `GET /notes` (own, paginated), `GET /notes/:id`, `PUT /notes/:id`, `DELETE /notes/:id`
+### M2 — Notes (own notes)
+**Note object**
+```json
+{ "id": "…", "owner": "<userId>", "title": "…", "content": "…", "createdAt": "…", "updatedAt": "…" }
+```
+**Note input:** `{ "title": 1-200 chars (trimmed), "content": 0-10000 chars (optional, default "") }`
+
+All endpoints require auth and only ever touch the caller's own notes. Someone else's note,
+or a malformed id, returns `404 NOT_FOUND` (never 403, so ids can't be probed).
+
+- `POST /notes` -> `201 { "note": Note }` · 400   [x]
+- `GET /notes?page&limit` -> `200 Page<Note>`, newest first · 400 on bad page/limit   [x]
+- `GET /notes/:id` -> `200 { "note": Note }` · 404   [x]
+- `PUT /notes/:id` (full replace of title + content) -> `200 { "note": Note }` · 400 · 404   [x]
+- `DELETE /notes/:id` -> `204` · 404   [x]
 
 ### M3 (planned)
 - `GET/POST /users`, `GET/PUT/DELETE /users/:id` (admin), `GET /admin/notes` (admin, paginated)

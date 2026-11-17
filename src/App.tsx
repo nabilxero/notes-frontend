@@ -3,6 +3,8 @@ import { AuthProvider, useAuth } from "./auth/AuthContext";
 import { RequireAuth } from "./auth/RequireAuth";
 import { HomePage } from "./pages/HomePage";
 import { LoginPage } from "./pages/LoginPage";
+import { NoteEditorPage } from "./pages/NoteEditorPage";
+import { NotesPage } from "./pages/NotesPage";
 import { RegisterPage } from "./pages/RegisterPage";
 
 function Nav() {
@@ -14,6 +16,7 @@ function Nav() {
         Notes
       </Link>
       <Link to="/">Home</Link>
+      <Link to="/notes">My notes</Link>
       <span className="spacer" />
       <span className="muted">{user.name}</span>
       <span className="badge">{user.role}</span>
@@ -37,6 +40,30 @@ export default function App() {
             element={
               <RequireAuth>
                 <HomePage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/notes"
+            element={
+              <RequireAuth>
+                <NotesPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/notes/new"
+            element={
+              <RequireAuth>
+                <NoteEditorPage />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/notes/:id"
+            element={
+              <RequireAuth>
+                <NoteEditorPage />
               </RequireAuth>
             }
           />

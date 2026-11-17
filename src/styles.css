@@ -135,7 +135,10 @@ textarea {
   resize: vertical;
 }
 
-button {
+button,
+.button {
+  display: inline-block;
+  text-decoration: none;
   padding: 8px 14px;
   font: inherit;
   font-weight: 600;
@@ -151,7 +154,8 @@ button:disabled {
   cursor: default;
 }
 
-button.secondary {
+button.secondary,
+.button.secondary {
   color: var(--text);
   background: transparent;
   border-color: var(--border);

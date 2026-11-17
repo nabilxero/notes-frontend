@@ -74,3 +74,39 @@ export const login = (input: { email: string; password: string }) =>
   apiFetch<AuthResponse>("/auth/login", { method: "POST", body: JSON.stringify(input) });
 
 export const getMe = () => apiFetch<{ user: User }>("/auth/me");
+
+// ---- Pagination ----
+export interface Page<T> {
+  items: T[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+}
+
+// ---- Notes ----
+export interface Note {
+  id: string;
+  owner: string;
+  title: string;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface NoteInput {
+  title: string;
+  content: string;
+}
+
+export const listNotes = (page: number, limit = 10) => apiFetch<Page<Note>>(`/notes?page=${page}&limit=${limit}`);
+
+export const getNote = (id: string) => apiFetch<{ note: Note }>(`/notes/${encodeURIComponent(id)}`);
+
+export const createNote = (input: NoteInput) =>
+  apiFetch<{ note: Note }>("/notes", { method: "POST", body: JSON.stringify(input) });
+
+export const updateNote = (id: string, input: NoteInput) =>
+  apiFetch<{ note: Note }>(`/notes/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify(input) });
+
+export const deleteNote = (id: string) => apiFetch<void>(`/notes/${encodeURIComponent(id)}`, { method: "DELETE" });

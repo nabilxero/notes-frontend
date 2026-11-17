@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
 import { getHealth, type Health } from "../api/client";
 import { useAuth } from "../auth/AuthContext";
 
@@ -19,6 +20,9 @@ export function HomePage() {
         </p>
         <p className="muted">API: {health ? `${health.status} · Database: ${health.db}` : "unreachable"}</p>
       </div>
+      <Link to="/notes" className="button">
+        Go to my notes →
+      </Link>
     </main>
   );
 }
