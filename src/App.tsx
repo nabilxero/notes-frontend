@@ -1,25 +1,39 @@
-import { useEffect, useState } from "react";
-import { getHealth, type Health } from "./api/client";
+import { BrowserRouter, Link, Navigate, Route, Routes } from "react-router";
+import { AuthProvider, useAuth } from "./auth/AuthContext";
+import { RequireAuth } from "./auth/RequireAuth";
+import { HomePage } from "./pages/HomePage";
+import { LoginPage } from "./pages/LoginPage";
+import { RegisterPage } from "./pages/RegisterPage";
+
+function Nav() {
+  const { user, logout } = useAuth();
+  if (!user) return null;
+  return (
+    <nav>
+      <Link to="/">Home</Link> · {user.name} ({user.role}) · <button onClick={logout}>Log out</button>
+    </nav>
+  );
+}
 
 export default function App() {
-  const [health, setHealth] = useState<Health | null>(null);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    getHealth().then(setHealth).catch((e: Error) => setError(e.message));
-  }, []);
-
   return (
-    <main>
-      <h1>Notes</h1>
-      <h2>API status</h2>
-      {error && <p>Cannot reach API: {error}</p>}
-      {health && (
-        <p>
-          API: {health.status} · Database: {health.db}
-        </p>
-      )}
-      {!health && !error && <p>Checking…</p>}
-    </main>
+    <BrowserRouter>
+      <AuthProvider>
+        <Nav />
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route
+            path="/"
+            element={
+              <RequireAuth>
+                <HomePage />
+              </RequireAuth>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }

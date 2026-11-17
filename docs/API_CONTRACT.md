@@ -24,8 +24,21 @@ Planned endpoints are filled in per milestone. Mark each as implemented when don
 ### M0
 - `GET /health` (**public**) -> `{ "status": "ok", "db": "up" | "down" }`   [x]
 
-### M1 (planned)
-- `POST /auth/register` (public), `POST /auth/login` (public), `GET /auth/me`
+### M1 — Auth
+**User object** (never contains the password hash)
+```json
+{ "id": "…", "name": "Alice", "email": "alice@example.com", "role": "user", "createdAt": "…", "updatedAt": "…" }
+```
+
+- `POST /auth/register` (**public**)   [x]
+  Body `{ "name": 1-100 chars, "email": valid, "password": 8-72 chars }`. Role is always `user`.
+  -> `201 { "token": "<jwt>", "user": User }` · 400 `VALIDATION_ERROR` · 409 `EMAIL_TAKEN`
+- `POST /auth/login` (**public**)   [x]
+  Body `{ "email", "password" }` -> `200 { "token", "user" }` · 401 `INVALID_CREDENTIALS` (same for unknown email and wrong password)
+- `GET /auth/me`   [x]
+  -> `200 { "user": User }` · 401 `UNAUTHENTICATED` (missing/invalid/expired token, or account deleted)
+
+JWT: HS256, `sub` = user id, `role` claim, expires per `JWT_EXPIRES_IN` (default 1 day).
 
 ### M2 (planned)
 - `POST /notes`, `GET /notes` (own, paginated), `GET /notes/:id`, `PUT /notes/:id`, `DELETE /notes/:id`
