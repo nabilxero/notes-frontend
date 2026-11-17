@@ -22,7 +22,7 @@ Status codes: 400 validation, 401 unauthenticated, 403 forbidden, 404 not found,
 Planned endpoints are filled in per milestone. Mark each as implemented when done.
 
 ### M0
-- `GET /health` (**public**) -> `{ "status": "ok", "db": "up" | "down" }`   [ ]
+- `GET /health` (**public**) -> `{ "status": "ok", "db": "up" | "down" }`   [x]
 
 ### M1 (planned)
 - `POST /auth/register` (public), `POST /auth/login` (public), `GET /auth/me`
