@@ -56,11 +56,21 @@ or a malformed id, returns `404 NOT_FOUND` (never 403, so ids can't be probed).
 - `PUT /notes/:id` (full replace of title + content) -> `200 { "note": Note }` · 400 · 404   [x]
 - `DELETE /notes/:id` -> `204` · 404   [x]
 
-### M3 (planned)
-- `GET/POST /users`, `GET/PUT/DELETE /users/:id` (admin), `GET /admin/notes` (admin, paginated)
+### M3 — Admin (role `admin` required)
+The admin role is re-checked in the database on every admin request (a demoted admin loses
+access immediately, even with an unexpired token). 401 if not logged in, 403 if not admin.
+The first admin is created with `npm run seed:admin` (public registration never creates admins).
+
+- `GET /users?page&limit` -> `200 Page<User>`, newest first   [x]
+- `POST /users` body `{ name, email, password, role? = "user" }` -> `201 { "user": User }` · 400 · 409 `EMAIL_TAKEN`   [x]
+- `GET /users/:id` -> `200 { "user": User }` · 404   [x]
+- `PUT /users/:id` body: any of `{ name, email, password, role }` (only sent fields change) -> `200 { "user": User }` · 400 `CANNOT_DEMOTE_SELF` · 404 · 409   [x]
+- `DELETE /users/:id` -> `204`, also deletes the user's notes · 400 `CANNOT_DELETE_SELF` · 404   [x]
+- `GET /admin/notes?page&limit` -> `200 Page<AdminNote>`, newest first   [x]
+  `AdminNote` = Note with `owner: { "id", "name", "email" } | null` (null if the owner was deleted)
 
 ### M4 (planned)
-- `POST /posts`, `GET /posts` (public, paginated), `GET /users/:id/posts` (aggregation with `$lookup`)
+- `POST /posts`, `GET /posts` (public, paginated), `GET /posts/by-user/:userId` (aggregation with `$lookup`; not under `/users`, which is admin-only)
 
 ### M5 (planned)
-- `PUT /auth/me` or `/users/me` (edit interests), `GET /users/by-interests` (single `aggregate()`)
+- `PUT /auth/me` (edit own profile incl. interests; not `/users/me`, since `/users` is admin-only), `GET /users/by-interests` (single `aggregate()`; access rule decided in M5)
