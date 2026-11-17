@@ -10,7 +10,16 @@ function Nav() {
   if (!user) return null;
   return (
     <nav>
-      <Link to="/">Home</Link> · {user.name} ({user.role}) · <button onClick={logout}>Log out</button>
+      <Link to="/" className="brand">
+        Notes
+      </Link>
+      <Link to="/">Home</Link>
+      <span className="spacer" />
+      <span className="muted">{user.name}</span>
+      <span className="badge">{user.role}</span>
+      <button className="secondary" onClick={logout}>
+        Log out
+      </button>
     </nav>
   );
 }

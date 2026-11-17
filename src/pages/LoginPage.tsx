@@ -25,25 +25,25 @@ export function LoginPage() {
   }
 
   return (
-    <main>
-      <h1>Log in</h1>
-      <form onSubmit={onSubmit}>
-        <p>
+    <main className="narrow">
+      <div className="card">
+        <h1>Log in</h1>
+        <form onSubmit={onSubmit}>
           <label>
             Email <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </label>
-        </p>
-        <p>
           <label>
             Password <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </label>
+          {error && <p role="alert">{error}</p>}
+          <button type="submit" disabled={busy}>
+            {busy ? "Logging in…" : "Log in"}
+          </button>
+        </form>
+        <p className="muted">
+          No account? <Link to="/register">Register</Link>
         </p>
-        {error && <p role="alert">{error}</p>}
-        <button disabled={busy}>Log in</button>
-      </form>
-      <p>
-        No account? <Link to="/register">Register</Link>
-      </p>
+      </div>
     </main>
   );
 }

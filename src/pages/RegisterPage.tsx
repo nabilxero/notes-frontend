@@ -26,31 +26,29 @@ export function RegisterPage() {
   }
 
   return (
-    <main>
-      <h1>Register</h1>
-      <form onSubmit={onSubmit}>
-        <p>
+    <main className="narrow">
+      <div className="card">
+        <h1>Register</h1>
+        <form onSubmit={onSubmit}>
           <label>
             Name <input value={name} onChange={(e) => setName(e.target.value)} required maxLength={100} />
           </label>
-        </p>
-        <p>
           <label>
             Email <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </label>
-        </p>
-        <p>
           <label>
-            Password (min 8){" "}
+            Password (min 8 characters)
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8} maxLength={72} />
           </label>
+          {error && <p role="alert">{error}</p>}
+          <button type="submit" disabled={busy}>
+            {busy ? "Creating account…" : "Create account"}
+          </button>
+        </form>
+        <p className="muted">
+          Have an account? <Link to="/login">Log in</Link>
         </p>
-        {error && <p role="alert">{error}</p>}
-        <button disabled={busy}>Create account</button>
-      </form>
-      <p>
-        Have an account? <Link to="/login">Log in</Link>
-      </p>
+      </div>
     </main>
   );
 }
