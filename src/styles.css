@@ -1,0 +1,226 @@
+/* Minimal global styles: plain CSS, mostly element selectors so new pages
+   are styled without extra classes. Light/dark via CSS variables. */
+
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --text: #1d2129;
+  --muted: #5f6b7a;
+  --border: #d9dde3;
+  --primary: #2f5bea;
+  --primary-text: #ffffff;
+  --danger: #c62828;
+  --danger-bg: #fdecea;
+  --radius: 8px;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14161a;
+    --surface: #1d2026;
+    --text: #e6e8eb;
+    --muted: #9aa4b1;
+    --border: #343941;
+    --primary: #6d8cff;
+    --primary-text: #0d1020;
+    --danger: #ff8a80;
+    --danger-bg: #3a1f1f;
+    color-scheme: dark;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ---- Layout ---- */
+main {
+  max-width: 960px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+main.narrow {
+  max-width: 420px;
+  margin-top: 64px;
+}
+
+h1 {
+  font-size: 1.6rem;
+  margin: 0 0 16px;
+}
+
+h2 {
+  font-size: 1.2rem;
+  margin: 24px 0 12px;
+}
+
+a {
+  color: var(--primary);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+/* ---- Top navigation ---- */
+nav {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+nav .brand {
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--text);
+}
+
+nav .spacer {
+  flex: 1;
+}
+
+/* ---- Cards ---- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  margin-bottom: 16px;
+}
+
+/* ---- Forms ---- */
+label {
+  display: block;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+input,
+textarea,
+select {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 8px 10px;
+  font: inherit;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 1px;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+button {
+  padding: 8px 14px;
+  font: inherit;
+  font-weight: 600;
+  color: var(--primary-text);
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+button.secondary {
+  color: var(--text);
+  background: transparent;
+  border-color: var(--border);
+}
+
+button.danger {
+  color: var(--danger);
+  background: transparent;
+  border-color: var(--danger);
+}
+
+form button[type="submit"],
+form > button {
+  width: 100%;
+  margin-top: 4px;
+}
+
+[role="alert"] {
+  padding: 8px 12px;
+  color: var(--danger);
+  background: var(--danger-bg);
+  border-radius: 6px;
+}
+
+/* ---- Tables (lists) ---- */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  font-size: 0.85rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* ---- Pagination ---- */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+/* ---- Small helpers ---- */
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

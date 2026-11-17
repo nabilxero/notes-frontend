@@ -13,10 +13,12 @@ export function HomePage() {
   return (
     <main>
       <h1>Welcome, {user!.name}</h1>
-      <p>
-        Signed in as {user!.email} · role: <strong>{user!.role}</strong>
-      </p>
-      <p>API: {health ? `${health.status} · Database: ${health.db}` : "unreachable"}</p>
+      <div className="card">
+        <p>
+          Signed in as {user!.email} <span className="badge">{user!.role}</span>
+        </p>
+        <p className="muted">API: {health ? `${health.status} · Database: ${health.db}` : "unreachable"}</p>
+      </div>
     </main>
   );
 }
