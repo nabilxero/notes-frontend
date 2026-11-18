@@ -1,0 +1,12 @@
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+# Single-page app: serve index.html for every route so reloading /notes works.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
