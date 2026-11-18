@@ -110,3 +110,32 @@ export const updateNote = (id: string, input: NoteInput) =>
   apiFetch<{ note: Note }>(`/notes/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify(input) });
 
 export const deleteNote = (id: string) => apiFetch<void>(`/notes/${encodeURIComponent(id)}`, { method: "DELETE" });
+
+// ---- Admin: users ----
+export interface UserInput {
+  name: string;
+  email: string;
+  role: Role;
+  password?: string; // required on create; optional on update (blank = keep current)
+}
+
+export const listUsers = (page: number, limit = 10) => apiFetch<Page<User>>(`/users?page=${page}&limit=${limit}`);
+
+export const getUser = (id: string) => apiFetch<{ user: User }>(`/users/${encodeURIComponent(id)}`);
+
+export const createUser = (input: UserInput) =>
+  apiFetch<{ user: User }>("/users", { method: "POST", body: JSON.stringify(input) });
+
+export const updateUser = (id: string, input: Partial<UserInput>) =>
+  apiFetch<{ user: User }>(`/users/${encodeURIComponent(id)}`, { method: "PUT", body: JSON.stringify(input) });
+
+export const deleteUser = (id: string) => apiFetch<void>(`/users/${encodeURIComponent(id)}`, { method: "DELETE" });
+
+// ---- Admin: everyone's notes ----
+// owner is populated with name + email (null if the owner no longer exists).
+export interface AdminNote extends Omit<Note, "owner"> {
+  owner: { id: string; name: string; email: string } | null;
+}
+
+export const listAllNotes = (page: number, limit = 10) =>
+  apiFetch<Page<AdminNote>>(`/admin/notes?page=${page}&limit=${limit}`);
